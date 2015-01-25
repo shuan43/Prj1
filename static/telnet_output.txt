@@ -1,0 +1,25 @@
+GET /~shuan43/ HTTP/1.0
+
+HTTP/1.1 200 OK
+Date: Sun, 25 Jan 2015 02:52:53 GMT
+Server: Apache/2.2.22 (Ubuntu)
+Last-Modified: Sun, 25 Jan 2015 01:46:57 GMT
+ETag: "58000a-a0-50d7032721c48"
+Accept-Ranges: bytes
+Content-Length: 160
+Vary: Accept-Encoding
+Connection: close
+Content-Type: text/html
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page Title</title>
+</head>
+<body>
+  <h1>This is a Sichong Huang</h1>
+  <p>Hello welcome to my page!</p>
+</body>
+
+</html>
+Connection closed by foreign host.
