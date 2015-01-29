@@ -62,7 +62,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 
-    os.path.join(PROJECT_PATH, '/home/shuan43/twitterClone/ribbit/ribbit/templates'),
+    os.path.join(PROJECT_PATH, '/home/shuan43/Prj1/twitterClone/ribbit/ribbit/templates'),
 )
 
 INSTALLED_APPS = (
