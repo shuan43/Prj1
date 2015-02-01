@@ -4,6 +4,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from ribbit_app.forms import AuthenticateForm, UserCreateForm, RibbitForm
 from ribbit_app.models import Ribbit
+from django.db.models import Count
+from django.http import Http404
 from django.contrib.auth.decorators import login_required
 def index(request, auth_form=None, user_form=None):
     # User is logged in
@@ -80,3 +82,32 @@ def public(request, ribbit_form=None):
                   'public.html',
                   {'ribbit_form': ribbit_form, 'next_url': '/ribbits',
                    'ribbits': ribbits, 'username': request.user.username})
+def get_latest(user):
+    try:
+        return user.ribbit_set.order_by('-id')[0]
+    except IndexError:
+        return ""
+ 
+ 
+@login_required
+def users(request, username="", ribbit_form=None):
+    if username:
+        # Show a profile
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise Http404
+        ribbits = Ribbit.objects.filter(user=user.id)
+        if username == request.user.username or request.user.profile.follows.filter(user__username=username):
+            # Self Profile or buddies' profile
+            return render(request, 'user.html', {'user': user, 'ribbits': ribbits, })
+        return render(request, 'user.html', {'user': user, 'ribbits': ribbits, 'follow': True, })
+    users = User.objects.all().annotate(ribbit_count=Count('ribbit'))
+    ribbits = map(get_latest, users)
+    obj = zip(users, ribbits)
+    ribbit_form = ribbit_form or RibbitForm()
+    return render(request,
+                  'profiles.html',
+                  {'obj': obj, 'next_url': '/users/',
+                   'ribbit_form': ribbit_form,
+                   'username': request.user.username, })
