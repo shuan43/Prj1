@@ -1,6 +1,18 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-
+from django.core.exceptions import ObjectDoesNotExist
+ 
+@login_required
+def follow(request):
+    if request.method == "POST":
+        follow_id = request.POST.get('follow', False)
+        if follow_id:
+            try:
+                user = User.objects.get(id=follow_id)
+                request.user.profile.follows.add(user.profile)
+            except ObjectDoesNotExist:
+                return redirect('/users/')
+    return redirect('/users/')
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'ribbit.views.home', name='home'),
