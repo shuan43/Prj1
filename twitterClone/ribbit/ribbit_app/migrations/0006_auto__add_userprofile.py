@@ -8,18 +8,28 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Ribbit'
-        db.create_table('ribbit_app_ribbit', (
+        # Adding model 'UserProfile'
+        db.create_table('ribbit_app_userprofile', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('content', self.gf('django.db.models.fields.CharField')(max_length=140)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
         ))
-        db.send_create_signal('ribbit_app', ['Ribbit'])
+        db.send_create_signal('ribbit_app', ['UserProfile'])
+
+        # Adding M2M table for field follows on 'UserProfile'
+        db.create_table('ribbit_app_userprofile_follows', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('from_userprofile', models.ForeignKey(orm['ribbit_app.userprofile'], null=False)),
+            ('to_userprofile', models.ForeignKey(orm['ribbit_app.userprofile'], null=False))
+        ))
+        db.create_unique('ribbit_app_userprofile_follows', ['from_userprofile_id', 'to_userprofile_id'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Ribbit'
-        db.delete_table('ribbit_app_ribbit')
+        # Deleting model 'UserProfile'
+        db.delete_table('ribbit_app_userprofile')
+
+        # Removing M2M table for field follows on 'UserProfile'
+        db.delete_table('ribbit_app_userprofile_follows')
 
 
     models = {
@@ -62,8 +72,15 @@ class Migration(SchemaMigration):
         'ribbit_app.ribbit': {
             'Meta': {'object_name': 'Ribbit'},
             'content': ('django.db.models.fields.CharField', [], {'max_length': '140'}),
+            'creation_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+        },
+        'ribbit_app.userprofile': {
+            'Meta': {'object_name': 'UserProfile'},
+            'follows': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'followed_by'", 'symmetrical': 'False', 'to': "orm['ribbit_app.UserProfile']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True'})
         }
     }
 

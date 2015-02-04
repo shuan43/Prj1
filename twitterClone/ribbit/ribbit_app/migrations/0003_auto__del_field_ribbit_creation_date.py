@@ -8,18 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Ribbit'
-        db.create_table('ribbit_app_ribbit', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('content', self.gf('django.db.models.fields.CharField')(max_length=140)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-        ))
-        db.send_create_signal('ribbit_app', ['Ribbit'])
+        # Deleting field 'Ribbit.creation_date'
+        db.delete_column('ribbit_app_ribbit', 'creation_date')
 
 
     def backwards(self, orm):
-        # Deleting model 'Ribbit'
-        db.delete_table('ribbit_app_ribbit')
+        # Adding field 'Ribbit.creation_date'
+        db.add_column('ribbit_app_ribbit', 'creation_date',
+                      self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now, blank=True),
+                      keep_default=False)
 
 
     models = {
