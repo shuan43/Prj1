@@ -23,9 +23,14 @@
 	color: @text-color;
 }
 
-body {
-	background: white url(gfx/bg.png);
-	margin: 0; padding: 0;
+
+video#bgvid {
+position: fixed; right: 0; bottom: 0;
+min-width: 100%; min-height: 100%;
+width: auto; height: auto; z-index: -100;
+backgroud: url(gfx/bg.gif)  ;
+background-size:cover
+
 }
 
 input {
@@ -94,7 +99,7 @@ header {
 	}
 }
 
-#content {
+content {
 	margin-bottom: 15px;
 	min-height: 560px;
 	div.wrapper {
@@ -105,7 +110,8 @@ header {
 		}
 		div.panel {
 			border: 1px solid @border-color;
-			background: white;
+			background: black;
+			opacity: 0.6;
 			margin: 0;
 			margin-bottom: 29px;
 			border-radius: 6px;
