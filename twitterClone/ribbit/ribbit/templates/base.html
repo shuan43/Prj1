@@ -19,7 +19,14 @@
             </form>
             {% endblock %}
         </div>
-    </header>
+</header>
+
+<video autoplay loop poster="{{STATIC_URL }}gfx/bg.gif" id="bgvid" >
+  <source src="{{STATIC_URL }}gfx/Rain.mp4" type="video/mp4">
+
+</video>
+
+    
     <div id="content">
         <div class="wrapper">
             {% block flash %}
